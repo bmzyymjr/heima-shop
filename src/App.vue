@@ -34,10 +34,13 @@ export default {
 
   created(){
     this.shopnum=0
-        var val=JSON.parse(window.localStorage.getItem("shopsMsg"))
-        val.forEach(item=>{
-            this.shopnum+=item.num
-        })
+    var val=JSON.parse(window.localStorage.getItem("shopsMsg"))
+    console.log(Array.isArray(val))
+    if(Array.isArray(val)){
+      val.forEach(item=>{
+        this.shopnum+=item.num
+      })
+    }
   },
 
   methods: {
@@ -48,18 +51,21 @@ export default {
 
   watch: {
     $route(to,from){
-      if(to.path === '/home'){
-        this.shopnum=0
-        var val=JSON.parse(window.localStorage.getItem("shopsMsg"))
+      var val=JSON.parse(window.localStorage.getItem("shopsMsg"))
+      console.log(Array.isArray(val))
+      if(Array.isArray(val)){
         val.forEach(item=>{
-            this.shopnum+=item.num
+          this.shopnum+=item.num
         })
+      }
+      if(to.path === '/home'){
         this.info = false
         this.showft=true
         this.add=false
         return 
       }else if(to.path==='/goods/detail'){
-        // this.shopnum=JSON.parse(window.localStorage.getItem("shopsMsg")).num
+        this.add=false
+        this.info = true
         this.showft=false
         return
       }else if(to.path==='/search'){
@@ -71,7 +77,6 @@ export default {
       }
       this.showft=true
       this.add=false
-      // this.shopnum=JSON.parse(window.localStorage.getItem("shopsMsg")).num
       this.info = true
     }
   }

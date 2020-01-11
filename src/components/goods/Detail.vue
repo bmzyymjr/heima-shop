@@ -46,7 +46,7 @@
 
     <!-- 底部导航栏 -->
      <!-- 底部导航栏 -->
-    <van-tabbar route >
+    <van-tabbar route  class="test">
       <van-tabbar-item icon="home-o" to="/home">首页</van-tabbar-item>
       <van-tabbar-item icon="friends-o" to="/member">会员</van-tabbar-item>
       <van-tabbar-item icon="cart-o" :info="shopnum" to="/shopcar">购物车</van-tabbar-item>
@@ -78,11 +78,13 @@ export default {
 
   created() {
     this.getgoodsDetail();
-    this.shopnum=0
-        var val=JSON.parse(window.localStorage.getItem("shopsMsg"))
-        val.forEach(item=>{
+    var val=JSON.parse(window.localStorage.getItem("shopsMsg"))
+    console.log(Array.isArray(val))
+    if(Array.isArray(val)){
+      val.forEach(item=>{
         this.shopnum+=item.num
-    })
+      })
+    }
   },
 
   methods: {
@@ -103,11 +105,10 @@ export default {
     // 添加商品的事件函数
     addShopCars(id) {
       this.shopCarInfo=JSON.parse(window.localStorage.getItem('shopsMsg'))
-        // console.log(Array.isArray(this.shopCarInfo));
-        if(Array.isArray(this.shopCarInfo)){
-          this.shopnum=0
+      this.shopnum+=this.value
+      console.log(this.value)
+      if(Array.isArray(this.shopCarInfo)){
           var index=this.shopCarInfo.findIndex(item=>{
-            this.shopnum+=item.num
             return item.id==id
           })
           if(index==-1){
@@ -137,7 +138,7 @@ export default {
     toCommentPage(id){
       this.$router.push({path: '/goods/comment', query: {id: id}})
     }
-  }
+  },
 };
 </script>
 
