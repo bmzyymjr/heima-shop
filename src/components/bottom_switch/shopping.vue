@@ -54,19 +54,22 @@ export default {
       // 是否删除选中的商品
       isDeleteShop: false,
       msg: [],
-      id:0
+      id: 0
     };
   },
   async created() {
     // 如果存在商品详情
-    if (window.localStorage.getItem("shopsMsg") &&JSON.parse(window.localStorage.getItem("shopsMsg")).length !== 0) {
+    if (
+      window.localStorage.getItem("shopsMsg") &&
+      JSON.parse(window.localStorage.getItem("shopsMsg")).length !== 0
+    ) {
       if (Array.isArray(JSON.parse(window.localStorage.getItem("shopsMsg")))) {
         this.percentNum = [];
-        this.msg=JSON.parse(window.localStorage.getItem("shopsMsg"))
-        var imgurl = window.localStorage.getItem('images')
-        
+        this.msg = JSON.parse(window.localStorage.getItem("shopsMsg"));
+        var imgurl = window.localStorage.getItem("images");
+
         this.msg.forEach(item => {
-          item.imgurl=imgurl
+          item.imgurl = imgurl;
         });
       }
       this.percentNum = [];
@@ -93,17 +96,25 @@ export default {
           }).catch(err => err);
           if (result !== "confirm") return;
           this.isDeleteShop = true;
-          var index=this.msg.findIndex(item=>{
-            return item.id==this.id
-          })
-          this.msg.splice(index,1)
+          this.sumPrice = 0;
+          this.msg.forEach(item => {
+            return (this.sumPrice += item.num * item.price * 100);
+          });
+          var index = this.msg.findIndex(item => {
+            return item.id == this.id;
+          });
+          this.msg.splice(index, 1);
           window.localStorage.setItem("shopsMsg", JSON.stringify(this.msg));
+          this.sumPrice = 0;
+          this.msg.forEach(item => {
+            this.sumPrice += item.num * item.price * 100;
+          });
           break;
       }
     },
     // 点击删除商品时会触发
     async deleteShop(id) {
-      this.id=id
+      this.id = id;
     },
     // 当商品数量发生变化时触发
     async countChange(i) {
