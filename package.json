@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.19.1",
     "core-js": "^3.4.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "vant": "^2.0.5",
